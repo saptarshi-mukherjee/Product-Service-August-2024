@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 //import  com.introduction.ProductServiceAug24.Models.Categories;
 
@@ -40,5 +41,13 @@ public class ProductController {
     public ResponseEntity<Categories> getAllCategories() {
         Categories category=prod_serve.getCategories();
         return new ResponseEntity<>(category, HttpStatusCode.valueOf(200));
+    }
+
+    @GetMapping("/products")
+    public ResponseEntity<List<Product>> limitProducts(@RequestParam("limit") int num) {
+        if(num<1 || num>20)
+            return new ResponseEntity<>(HttpStatusCode.valueOf(400));
+        List<Product> prod_list=prod_serve.getPopularProducts(num);
+        return new ResponseEntity<>(prod_list, HttpStatusCode.valueOf(200));
     }
 }

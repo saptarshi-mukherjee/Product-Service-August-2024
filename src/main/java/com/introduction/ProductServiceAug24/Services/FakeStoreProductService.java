@@ -46,6 +46,17 @@ public class FakeStoreProductService implements ProductService{
         return convertFakeCategoriesToCustomCategories(fake_categories);
     }
 
+    @Override
+    public List<Product> getPopularProducts(int size) {
+        String url="https://fakestoreapi.com/products?limit="+size;
+        RestTemplate rest=new RestTemplate();
+        FakeStoreProductDto[] fake_prod=rest.getForObject(url, FakeStoreProductDto[].class);
+        List<Product> products=new ArrayList<Product>();
+        for(FakeStoreProductDto p : fake_prod)
+            products.add(convertFakeProductToCustomProduct(p));
+        return products;
+    }
+
     private Categories convertFakeCategoriesToCustomCategories(String[] fake_category) {
         Categories category=new Categories();
         category.setCat1(fake_category[0]);
@@ -60,6 +71,7 @@ public class FakeStoreProductService implements ProductService{
         product.setName(fake_dto.getTitle());
         product.setCategory(fake_dto.getCategory());
         product.setDescription(fake_dto.getDescription());
+        product.setId(fake_dto.getId());
         return product;
     }
 }

@@ -10,4 +10,5 @@ public interface ProductService {
     public Product getProduct(long id);
     public List<Product> getProductList();
     public Categories getCategories();
+    public List<Product> getPopularProducts(int size);
 }
