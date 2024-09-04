@@ -1,5 +1,6 @@
 package com.introduction.ProductServiceAug24.Controllers;
 
+import com.introduction.ProductServiceAug24.Exceptions.InvalidSortingException;
 import com.introduction.ProductServiceAug24.Exceptions.ProductLimitOutOfBoundsException;
 import com.introduction.ProductServiceAug24.Exceptions.ProductNotFoundExceptions;
 import com.introduction.ProductServiceAug24.Models.Categories;
@@ -23,7 +24,7 @@ public class ProductController {
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable("id") long prod_id) throws ProductNotFoundExceptions {
+    public ResponseEntity<Product> getProductById(@PathVariable(value = "id", required = false) Long prod_id) throws ProductNotFoundExceptions {
         Product prod=prod_serve.getProduct(prod_id);
         return new ResponseEntity<>(prod, HttpStatusCode.valueOf(200));
     }
@@ -41,8 +42,17 @@ public class ProductController {
     }
 
     @GetMapping("")
-    public ResponseEntity<List<Product>> limitProducts(@RequestParam("limit") int num) throws ProductLimitOutOfBoundsException {
-        List<Product> prod_list=prod_serve.getPopularProducts(num);
-        return new ResponseEntity<>(prod_list, HttpStatusCode.valueOf(200));
+    public ResponseEntity<List<Product>> getSortedOrLimitedProducts(@RequestParam(value = "limit", required = false) Integer limit,
+                                                                    @RequestParam(value = "sort", required = false) String sort_type)
+                                                                    throws ProductLimitOutOfBoundsException, InvalidSortingException {
+        List<Product> prod_list=null;
+        if(sort_type==null) {
+            prod_list=prod_serve.getPopularProducts(limit);
+            return new ResponseEntity<List<Product>>(prod_list, HttpStatusCode.valueOf(200));
+        }
+        else {
+            prod_list=prod_serve.sortProducts(sort_type);
+            return new ResponseEntity<List<Product>>(prod_list, HttpStatusCode.valueOf(200));
+        }
     }
 }

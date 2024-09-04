@@ -1,6 +1,7 @@
 package com.introduction.ProductServiceAug24.Services;
 
 import com.introduction.ProductServiceAug24.DTO.FakeStoreProductDto;
+import com.introduction.ProductServiceAug24.Exceptions.InvalidSortingException;
 import com.introduction.ProductServiceAug24.Exceptions.ProductLimitOutOfBoundsException;
 import com.introduction.ProductServiceAug24.Exceptions.ProductNotFoundExceptions;
 import com.introduction.ProductServiceAug24.Models.Categories;
@@ -15,7 +16,7 @@ import java.util.List;
 public class FakeStoreProductService implements ProductService{
 
     @Override
-    public Product getProduct(long id) throws ProductNotFoundExceptions {
+    public Product getProduct(Long id) throws ProductNotFoundExceptions {
         /*
         Get ID as input and call FakeStore API for product details
          */
@@ -25,7 +26,7 @@ public class FakeStoreProductService implements ProductService{
         RestTemplate rest=new RestTemplate();
         // API call
         FakeStoreProductDto fake_dto=rest.getForObject(url, FakeStoreProductDto.class); // creates DTO object by converting API data to DTO format.
-        if(fake_dto==null) {
+        if(fake_dto==null || id==null) {
             throw new ProductNotFoundExceptions("Product not in inventory");
         }
         return convertFakeProductToCustomProduct(fake_dto);
@@ -66,6 +67,20 @@ public class FakeStoreProductService implements ProductService{
         for(FakeStoreProductDto p : fake_prod)
             products.add(convertFakeProductToCustomProduct(p));
         return products;
+    }
+
+    @Override
+    public List<Product> sortProducts(String sort_type) throws InvalidSortingException {
+        if(sort_type.equals("asc") || sort_type.equals("desc")) {
+            String url = "https://fakestoreapi.com/products?sort=" + sort_type;
+            RestTemplate rest = new RestTemplate();
+            FakeStoreProductDto[] fake_prod = rest.getForObject(url, FakeStoreProductDto[].class);
+            List<Product> prod_list = new ArrayList<Product>();
+            for (FakeStoreProductDto f : fake_prod)
+                prod_list.add(convertFakeProductToCustomProduct(f));
+            return prod_list;
+        }
+        throw new InvalidSortingException("Sorting type not available");
     }
 
     private Categories convertFakeCategoriesToCustomCategories(String[] fake_category) {
