@@ -1,5 +1,6 @@
 package com.introduction.ProductServiceAug24.Controllers;
 
+import com.introduction.ProductServiceAug24.Exceptions.ProductNotFoundExceptions;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,7 +16,10 @@ public class SampleController {
     }
 
     @GetMapping("/hello/{name}")
-    public String printName(@PathVariable("name") String name) {
+    public String printName(@PathVariable("name") String name) throws ProductNotFoundExceptions{
+        if(name.charAt(0)<65 || name.charAt(0)>90) {
+            throw new ProductNotFoundExceptions("Name starts with capital english alphabet");
+        }
         return "Hello "+name+". Welcome to SpringBoot Project";
     }
 

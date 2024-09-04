@@ -1,6 +1,8 @@
 package com.introduction.ProductServiceAug24.Services;
 
 import com.introduction.ProductServiceAug24.DTO.FakeStoreProductDto;
+import com.introduction.ProductServiceAug24.Exceptions.ProductLimitOutOfBoundsException;
+import com.introduction.ProductServiceAug24.Exceptions.ProductNotFoundExceptions;
 import com.introduction.ProductServiceAug24.Models.Categories;
 import com.introduction.ProductServiceAug24.Models.Product;
 import org.springframework.stereotype.Service;
@@ -13,7 +15,7 @@ import java.util.List;
 public class FakeStoreProductService implements ProductService{
 
     @Override
-    public Product getProduct(long id) {
+    public Product getProduct(long id) throws ProductNotFoundExceptions {
         /*
         Get ID as input and call FakeStore API for product details
          */
@@ -23,6 +25,9 @@ public class FakeStoreProductService implements ProductService{
         RestTemplate rest=new RestTemplate();
         // API call
         FakeStoreProductDto fake_dto=rest.getForObject(url, FakeStoreProductDto.class); // creates DTO object by converting API data to DTO format.
+        if(fake_dto==null) {
+            throw new ProductNotFoundExceptions("Product not in inventory");
+        }
         return convertFakeProductToCustomProduct(fake_dto);
     }
 
@@ -47,7 +52,13 @@ public class FakeStoreProductService implements ProductService{
     }
 
     @Override
-    public List<Product> getPopularProducts(int size) {
+    public List<Product> getPopularProducts(int size) throws ProductLimitOutOfBoundsException {
+        if(size<1) {
+            throw new ProductLimitOutOfBoundsException("Too few products. Try higher number");
+        }
+        if(size>20) {
+            throw new ProductLimitOutOfBoundsException("Too many products. Try lower number");
+        }
         String url="https://fakestoreapi.com/products?limit="+size;
         RestTemplate rest=new RestTemplate();
         FakeStoreProductDto[] fake_prod=rest.getForObject(url, FakeStoreProductDto[].class);
