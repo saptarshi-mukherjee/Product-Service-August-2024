@@ -3,7 +3,7 @@ package com.introduction.ProductServiceAug24.Models;
 import java.util.List;
 
 public class CartInfo {
-    int user_id;
+    int user_id, id;
     List<ProductDescriptionInCart> product_detalis;
 
     public int getUser_id() {
@@ -20,5 +20,13 @@ public class CartInfo {
 
     public void setProduct_detalis(List<ProductDescriptionInCart> product_detalis) {
         this.product_detalis = product_detalis;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
