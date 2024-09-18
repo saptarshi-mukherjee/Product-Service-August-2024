@@ -88,6 +88,16 @@ public class FakeStoreProductService implements ProductService{
         return null;
     }
 
+    @Override
+    public Product getProductFromDBById(long id) {
+        return null;
+    }
+
+    @Override
+    public List<Product> getAllProductsFromDB() {
+        return List.of();
+    }
+
     private Categories convertFakeCategoriesToCustomCategories(String[] fake_category) {
         Categories category=new Categories();
         category.setCat1(fake_category[0]);

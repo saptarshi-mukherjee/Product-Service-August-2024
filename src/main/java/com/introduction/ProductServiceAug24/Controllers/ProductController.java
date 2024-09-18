@@ -66,6 +66,11 @@ public class ProductController {
 
     @GetMapping("/db/{id}")
     public Product getDBProductById(@PathVariable("id") long id) {
-        return null;
+        return prod_serve.getProductFromDBById(id);
+    }
+
+    @GetMapping("/db/all")
+    public List<Product> getAllProductsFromDB(){
+        return prod_serve.getAllProductsFromDB();
     }
 }

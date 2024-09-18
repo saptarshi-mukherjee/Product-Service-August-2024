@@ -52,4 +52,17 @@ public class ProductServiceImpl implements ProductService{
         product=prod_repo.save(product);
         return product;
     }
+
+    @Override
+    public Product getProductFromDBById(long id) {
+        //Product product=new Product();
+        Product product=prod_repo.fetchProductById(id);
+        return product;
+    }
+
+    @Override
+    public List<Product> getAllProductsFromDB() {
+        List<Product> prod_list=prod_repo.fetchAllProducts();
+        return prod_list;
+    }
 }

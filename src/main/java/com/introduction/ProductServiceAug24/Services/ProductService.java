@@ -16,5 +16,7 @@ public interface ProductService {
     public List<Product> getPopularProducts(int size) throws ProductLimitOutOfBoundsException;
     public List<Product> sortProducts(String sort_type) throws InvalidSortingException;
     public Product createProduct(String name, String category, String description);
+    public Product getProductFromDBById(long id);
+    public List<Product> getAllProductsFromDB();
 
 }
