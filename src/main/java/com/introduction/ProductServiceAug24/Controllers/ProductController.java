@@ -63,4 +63,9 @@ public class ProductController {
     public Product createNewProduct(@RequestBody PostProductRequestDto post_request) {
         return prod_serve.createProduct(post_request.getName(), post_request.getCategory(), post_request.getDescription());
     }
+
+    @GetMapping("/db/{id}")
+    public Product getDBProductById(@PathVariable("id") long id) {
+        return null;
+    }
 }
