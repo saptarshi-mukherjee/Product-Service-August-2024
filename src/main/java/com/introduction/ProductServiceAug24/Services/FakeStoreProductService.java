@@ -83,6 +83,11 @@ public class FakeStoreProductService implements ProductService{
         throw new InvalidSortingException("Sorting type not available");
     }
 
+    @Override
+    public Product createProduct(String name, String category, String description) {
+        return null;
+    }
+
     private Categories convertFakeCategoriesToCustomCategories(String[] fake_category) {
         Categories category=new Categories();
         category.setCat1(fake_category[0]);

@@ -1,5 +1,6 @@
 package com.introduction.ProductServiceAug24.Controllers;
 
+import com.introduction.ProductServiceAug24.DTO.PostProductRequestDto;
 import com.introduction.ProductServiceAug24.Exceptions.InvalidSortingException;
 import com.introduction.ProductServiceAug24.Exceptions.ProductLimitOutOfBoundsException;
 import com.introduction.ProductServiceAug24.Exceptions.ProductNotFoundExceptions;
@@ -7,6 +8,7 @@ import com.introduction.ProductServiceAug24.Models.Categories;
 import com.introduction.ProductServiceAug24.Models.Product;
 import com.introduction.ProductServiceAug24.Services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +21,7 @@ import java.util.*;
 @RequestMapping("/products")
 public class ProductController {
     @Autowired
+    @Qualifier("custom DB service")
     ProductService prod_serve;
 
 
@@ -54,5 +57,10 @@ public class ProductController {
             prod_list=prod_serve.sortProducts(sort_type);
             return new ResponseEntity<List<Product>>(prod_list, HttpStatusCode.valueOf(200));
         }
+    }
+
+    @PostMapping("")
+    public Product createNewProduct(@RequestBody PostProductRequestDto post_request) {
+        return prod_serve.createProduct(post_request.getName(), post_request.getCategory(), post_request.getDescription());
     }
 }
