@@ -1,6 +1,7 @@
 package com.introduction.ProductServiceAug24.Services;
 
 import com.introduction.ProductServiceAug24.DTO.FakeStoreProductDto;
+import com.introduction.ProductServiceAug24.DTO.NameAndIdResponseDto;
 import com.introduction.ProductServiceAug24.Exceptions.InvalidSortingException;
 import com.introduction.ProductServiceAug24.Exceptions.ProductLimitOutOfBoundsException;
 import com.introduction.ProductServiceAug24.Exceptions.ProductNotFoundExceptions;
@@ -96,6 +97,26 @@ public class FakeStoreProductService implements ProductService{
     @Override
     public List<Product> getAllProductsFromDB() {
         return List.of();
+    }
+
+    @Override
+    public List<String> getAllcategories() {
+        return List.of();
+    }
+
+    @Override
+    public List<NameAndIdResponseDto> getNameAndId(String name) {
+        return List.of();
+    }
+
+    @Override
+    public Product updateProduct(String name, String category, String description, long id) {
+        return null;
+    }
+
+    @Override
+    public List<Product> deleteProductById(long id) {
+        return null;
     }
 
     private Categories convertFakeCategoriesToCustomCategories(String[] fake_category) {

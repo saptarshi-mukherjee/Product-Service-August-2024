@@ -1,6 +1,8 @@
 package com.introduction.ProductServiceAug24.Controllers;
 
+import com.introduction.ProductServiceAug24.DTO.NameAndIdResponseDto;
 import com.introduction.ProductServiceAug24.DTO.PostProductRequestDto;
+import com.introduction.ProductServiceAug24.DTO.UpdateProductRequestDto;
 import com.introduction.ProductServiceAug24.Exceptions.InvalidSortingException;
 import com.introduction.ProductServiceAug24.Exceptions.ProductLimitOutOfBoundsException;
 import com.introduction.ProductServiceAug24.Exceptions.ProductNotFoundExceptions;
@@ -72,5 +74,25 @@ public class ProductController {
     @GetMapping("/db/all")
     public List<Product> getAllProductsFromDB(){
         return prod_serve.getAllProductsFromDB();
+    }
+
+    @GetMapping("/db/categories")
+    public List<String> getCatgoriesFromDB() {
+        return prod_serve.getAllcategories();
+    }
+
+    @GetMapping("/db/matching")
+    public List<NameAndIdResponseDto> getNameAndIdFromDb(@RequestParam("name") String name) {
+        return prod_serve.getNameAndId(name);
+    }
+
+    @PutMapping("/db/update")
+    public Product updateProductInDB(@RequestBody UpdateProductRequestDto prod_req) {
+        return prod_serve.updateProduct(prod_req.getName(), prod_req.getCategory(), prod_req.getDescription(), prod_req.getId());
+    }
+
+    @DeleteMapping("/db/delete/{id}")
+    public List<Product> deleteProductInDB(@PathVariable("id") long id) {
+        return prod_serve.deleteProductById(id);
     }
 }

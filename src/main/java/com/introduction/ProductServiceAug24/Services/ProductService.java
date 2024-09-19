@@ -1,5 +1,6 @@
 package com.introduction.ProductServiceAug24.Services;
 
+import com.introduction.ProductServiceAug24.DTO.NameAndIdResponseDto;
 import com.introduction.ProductServiceAug24.Exceptions.InvalidSortingException;
 import com.introduction.ProductServiceAug24.Exceptions.ProductLimitOutOfBoundsException;
 import com.introduction.ProductServiceAug24.Exceptions.ProductNotFoundExceptions;
@@ -18,5 +19,8 @@ public interface ProductService {
     public Product createProduct(String name, String category, String description);
     public Product getProductFromDBById(long id);
     public List<Product> getAllProductsFromDB();
-
+    public List<String> getAllcategories();
+    public List<NameAndIdResponseDto> getNameAndId(String name);
+    public Product updateProduct(String name, String category, String description, long id);
+    public List<Product> deleteProductById(long id);
 }
