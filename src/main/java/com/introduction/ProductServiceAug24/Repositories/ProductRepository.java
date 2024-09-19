@@ -8,13 +8,14 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product,Long> {
 
     @Query(value = "select * from products_db\n" +
             "where id= :id", nativeQuery = true)
-    public Product fetchProductById(@Param("id") Long id);
+    public Optional<Product> fetchProductById(@Param("id") Long id);
 
     @Query(value = "select * from products_db", nativeQuery = true)
     public List<Product> fetchAllProducts();

@@ -67,7 +67,7 @@ public class ProductController {
     }
 
     @GetMapping("/db/{id}")
-    public Product getDBProductById(@PathVariable("id") long id) {
+    public Product getDBProductById(@PathVariable("id") long id) throws ProductNotFoundExceptions {
         return prod_serve.getProductFromDBById(id);
     }
 

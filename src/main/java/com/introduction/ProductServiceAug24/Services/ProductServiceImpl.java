@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service("custom DB service")
@@ -56,10 +57,13 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public Product getProductFromDBById(long id) {
+    public Product getProductFromDBById(long id) throws ProductNotFoundExceptions{
         //Product product=new Product();
-        Product product=prod_repo.fetchProductById(id);
-        return product;
+        Optional<Product> prod_op=prod_repo.fetchProductById(id);
+        if(prod_op.isPresent())
+            return prod_op.get();
+        else
+            throw new ProductNotFoundExceptions("Product not present");
     }
 
     @Override
@@ -89,18 +93,26 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public Product updateProduct(String name, String category, String description, long id) {
-        Product product=prod_repo.fetchProductById(id);
-        product.setName(name);
-        product.setDescription(description);
-        product.setCategory(category);
-        product=prod_repo.save(product);
+        Optional<Product> prod_op=prod_repo.fetchProductById(id);
+        Product product=null;
+        if(prod_op.isPresent()) {
+            product = prod_op.get();
+            product.setName(name);
+            product.setDescription(description);
+            product.setCategory(category);
+            product = prod_repo.save(product);
+        }
         return product;
     }
 
     @Override
     public List<Product> deleteProductById(long id) {
-        Product product=prod_repo.fetchProductById(id);
-        prod_repo.delete(product);
+        Optional<Product> prod_op=prod_repo.fetchProductById(id);
+        Product product=null;
+        if(prod_op.isPresent()) {
+            product = prod_op.get();
+            prod_repo.delete(product);
+        }
         List<Product> prod_list=prod_repo.fetchAllProducts();
         return prod_list;
     }
