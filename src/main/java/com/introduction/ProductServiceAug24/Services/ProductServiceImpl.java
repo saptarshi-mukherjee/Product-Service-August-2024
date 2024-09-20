@@ -1,11 +1,14 @@
 package com.introduction.ProductServiceAug24.Services;
 
 import com.introduction.ProductServiceAug24.DTO.NameAndIdResponseDto;
+import com.introduction.ProductServiceAug24.DTO.UserAndProductDto;
 import com.introduction.ProductServiceAug24.Exceptions.InvalidSortingException;
 import com.introduction.ProductServiceAug24.Exceptions.ProductLimitOutOfBoundsException;
 import com.introduction.ProductServiceAug24.Exceptions.ProductNotFoundExceptions;
+import com.introduction.ProductServiceAug24.Models.Cart;
 import com.introduction.ProductServiceAug24.Models.Categories;
 import com.introduction.ProductServiceAug24.Models.Product;
+import com.introduction.ProductServiceAug24.Repositories.CartRepository;
 import com.introduction.ProductServiceAug24.Repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +23,8 @@ public class ProductServiceImpl implements ProductService{
 
     @Autowired
     ProductRepository prod_repo;
+    @Autowired
+    CartRepository cart_repo;
 
     @Override
     public Product getProduct(Long id) throws ProductNotFoundExceptions {
@@ -59,9 +64,9 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public Product getProductFromDBById(long id) throws ProductNotFoundExceptions{
         //Product product=new Product();
-        Optional<Product> prod_op=prod_repo.fetchProductById(id);
-        if(prod_op.isPresent())
-            return prod_op.get();
+        Product prod_op=prod_repo.fetchProductById(id);
+        if(prod_op!=null)
+            return prod_op;
         else
             throw new ProductNotFoundExceptions("Product not present");
     }
@@ -93,27 +98,48 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public Product updateProduct(String name, String category, String description, long id) {
-        Optional<Product> prod_op=prod_repo.fetchProductById(id);
-        Product product=null;
-        if(prod_op.isPresent()) {
-            product = prod_op.get();
-            product.setName(name);
-            product.setDescription(description);
-            product.setCategory(category);
-            product = prod_repo.save(product);
-        }
+        Product product=prod_repo.fetchProductById(id);
+        product.setName(name);
+        product.setDescription(description);
+        product.setCategory(category);
+        product = prod_repo.save(product);
         return product;
     }
 
     @Override
     public List<Product> deleteProductById(long id) {
-        Optional<Product> prod_op=prod_repo.fetchProductById(id);
-        Product product=null;
-        if(prod_op.isPresent()) {
-            product = prod_op.get();
-            prod_repo.delete(product);
-        }
+        Product prod_op=prod_repo.fetchProductById(id);
+        prod_repo.delete(prod_op);
         List<Product> prod_list=prod_repo.fetchAllProducts();
         return prod_list;
+    }
+
+    @Override
+    public Cart createCart(String user_name, long prod_id) {
+        Product product=getProductById(prod_id);
+        Cart cart=new Cart();
+        cart.setUser_name(user_name);
+        cart.getProducts().add(product);
+        cart=cart_repo.save(cart);
+        return cart;
+    }
+
+    @Override
+    public Product getProductById(long id) {
+        return prod_repo.fetchProductById(id);
+    }
+
+    @Override
+    public Cart getCartById(long id) {
+        return cart_repo.fetchCartById(id);
+    }
+
+    @Override
+    public UserAndProductDto getUserAndProduct(long cart_id) {
+        List<Object[]> result=cart_repo.fetchUserAndProduct(cart_id);
+        UserAndProductDto up_dto=new UserAndProductDto();
+        up_dto.setUser_name(result.get(0)[0].toString());
+        up_dto.setProduct_name((result.get(0)[1].toString()));
+        return up_dto;
     }
 }

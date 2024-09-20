@@ -1,4 +1,4 @@
-package com.introduction.ProductServiceAug24.Cardinalities.ManyToOne;
+package com.introduction.ProductServiceAug24.Models;
 
 
 import jakarta.persistence.Entity;

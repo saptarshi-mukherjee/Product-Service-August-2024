@@ -1,9 +1,11 @@
 package com.introduction.ProductServiceAug24.Services;
 
 import com.introduction.ProductServiceAug24.DTO.NameAndIdResponseDto;
+import com.introduction.ProductServiceAug24.DTO.UserAndProductDto;
 import com.introduction.ProductServiceAug24.Exceptions.InvalidSortingException;
 import com.introduction.ProductServiceAug24.Exceptions.ProductLimitOutOfBoundsException;
 import com.introduction.ProductServiceAug24.Exceptions.ProductNotFoundExceptions;
+import com.introduction.ProductServiceAug24.Models.Cart;
 import com.introduction.ProductServiceAug24.Models.Categories;
 import com.introduction.ProductServiceAug24.Models.Product;
 
@@ -23,4 +25,8 @@ public interface ProductService {
     public List<NameAndIdResponseDto> getNameAndId(String name);
     public Product updateProduct(String name, String category, String description, long id);
     public List<Product> deleteProductById(long id);
+    public Cart createCart(String user_name, long prod_id);
+    public Product getProductById(long id);
+    public Cart getCartById(long id);
+    public UserAndProductDto getUserAndProduct(long cart_id);
 }
