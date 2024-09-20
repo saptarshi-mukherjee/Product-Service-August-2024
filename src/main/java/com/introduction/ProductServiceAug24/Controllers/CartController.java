@@ -9,6 +9,7 @@ import com.introduction.ProductServiceAug24.Exceptions.ProductLimitOutOfBoundsEx
 import com.introduction.ProductServiceAug24.Exceptions.ProductNotFoundExceptions;
 import com.introduction.ProductServiceAug24.Models.Cart;
 import com.introduction.ProductServiceAug24.Models.CartInfo;
+import com.introduction.ProductServiceAug24.Projections.NameAndProductInfo;
 import com.introduction.ProductServiceAug24.Services.CartServices;
 import com.introduction.ProductServiceAug24.Services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +61,7 @@ public class CartController {
     }
 
     @GetMapping("/db/get/user_product/{cart_id}")
-    public UserAndProductDto getUserAndProductFromDB(@PathVariable("cart_id") long cart_id) {
+    public NameAndProductInfo getUserAndProductFromDB(@PathVariable("cart_id") long cart_id) {
         return prod.getUserAndProduct(cart_id);
     }
 }

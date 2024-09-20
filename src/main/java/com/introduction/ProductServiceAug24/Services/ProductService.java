@@ -8,6 +8,7 @@ import com.introduction.ProductServiceAug24.Exceptions.ProductNotFoundExceptions
 import com.introduction.ProductServiceAug24.Models.Cart;
 import com.introduction.ProductServiceAug24.Models.Categories;
 import com.introduction.ProductServiceAug24.Models.Product;
+import com.introduction.ProductServiceAug24.Projections.NameAndProductInfo;
 
 import java.util.List;
 
@@ -28,5 +29,5 @@ public interface ProductService {
     public Cart createCart(String user_name, long prod_id);
     public Product getProductById(long id);
     public Cart getCartById(long id);
-    public UserAndProductDto getUserAndProduct(long cart_id);
+    public NameAndProductInfo getUserAndProduct(long cart_id);
 }

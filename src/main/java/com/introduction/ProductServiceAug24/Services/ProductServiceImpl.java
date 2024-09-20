@@ -8,6 +8,7 @@ import com.introduction.ProductServiceAug24.Exceptions.ProductNotFoundExceptions
 import com.introduction.ProductServiceAug24.Models.Cart;
 import com.introduction.ProductServiceAug24.Models.Categories;
 import com.introduction.ProductServiceAug24.Models.Product;
+import com.introduction.ProductServiceAug24.Projections.NameAndProductInfo;
 import com.introduction.ProductServiceAug24.Repositories.CartRepository;
 import com.introduction.ProductServiceAug24.Repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 
 @Service("custom DB service")
@@ -135,11 +135,8 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public UserAndProductDto getUserAndProduct(long cart_id) {
-        List<Object[]> result=cart_repo.fetchUserAndProduct(cart_id);
-        UserAndProductDto up_dto=new UserAndProductDto();
-        up_dto.setUser_name(result.get(0)[0].toString());
-        up_dto.setProduct_name((result.get(0)[1].toString()));
-        return up_dto;
+    public NameAndProductInfo getUserAndProduct(long cart_id) {
+        NameAndProductInfo info=cart_repo.fetchUserAndProduct(cart_id);
+        return info;
     }
 }

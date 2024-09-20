@@ -2,13 +2,13 @@ package com.introduction.ProductServiceAug24.Services;
 
 import com.introduction.ProductServiceAug24.DTO.FakeStoreProductDto;
 import com.introduction.ProductServiceAug24.DTO.NameAndIdResponseDto;
-import com.introduction.ProductServiceAug24.DTO.UserAndProductDto;
 import com.introduction.ProductServiceAug24.Exceptions.InvalidSortingException;
 import com.introduction.ProductServiceAug24.Exceptions.ProductLimitOutOfBoundsException;
 import com.introduction.ProductServiceAug24.Exceptions.ProductNotFoundExceptions;
 import com.introduction.ProductServiceAug24.Models.Cart;
 import com.introduction.ProductServiceAug24.Models.Categories;
 import com.introduction.ProductServiceAug24.Models.Product;
+import com.introduction.ProductServiceAug24.Projections.NameAndProductInfo;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -137,7 +137,7 @@ public class FakeStoreProductService implements ProductService{
     }
 
     @Override
-    public UserAndProductDto getUserAndProduct(long cart_id) {
+    public NameAndProductInfo getUserAndProduct(long cart_id) {
         return null;
     }
 
